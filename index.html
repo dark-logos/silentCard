@@ -3,7 +3,7 @@
    <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>День Рождения в стиле Silent Hill</title>
+     <title>он? он</title>
      <style>
        body {
          margin: 0;
@@ -157,13 +157,6 @@
          <button id="finishButton" style="display: none;">Завершить</button>
          <div id="wishMessage"></div>
        </form>
-     </div>
-     <div class="slide" id="secret-slide">
-       <div class="dialog-box">
-         <div class="pixel-text">Ты согласна быть моей валентинкой?</div>
-         <button onclick="alert('Хихи, люблю тебя! До скорых встреч')">Да</button>
-         <button onclick="alert('Я знал, что ты скажешь да!')">Да</button>
-       </div>
      </div>
 
      <script>
@@ -385,7 +378,7 @@
                  if (wish) {
                    const sanitizedWish = sanitizeInput(wish);
                    try {
-                     const response = await fetch('https://your-app.onrender.com/save-wish.php', {
+                     const response = await fetch('https://tonastya.onrender.com/save-wish.php', {
                        method: 'POST',
                        headers: {
                          'Content-Type': 'application/json'
