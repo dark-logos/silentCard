@@ -1,450 +1,431 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>День Рождения в стиле Silent Hill</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      height: 100vh;
-      overflow: hidden;
-      font-family: 'Courier New', monospace;
-    }
-    .slide {
-      display: none;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      color: #fff;
-      font-size: 16px;
-      white-space: pre-wrap;
-    }
-    .slide.active {
-      display: block !important;
-    }
-    .letter {
-      display: inline-block;
-      animation: flicker 0.1s infinite;
-    }
-    @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: 0.8; }
-      100% { opacity: 1; }
-    }
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    #wishForm {
-      position: absolute;
-      top: 80%; /* Внизу */
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #fff;
-      font-size: 16px;
-      text-align: center;
-      background: #000; /* Чёрный фон */
-      padding: 20px;
-      border: 1px solid #fff; /* Белая граница */
-      border-radius: 5px;
-      z-index: 20;
-      display: none; /* Скрыта до клика */
-    }
-    #wishInput {
-      width: 300px;
-      height: 100px;
-      padding: 10px;
-      margin-top: 10px;
-      background: #fff; /* Белый фон */
-      color: #000; /* Чёрный текст */
-      border: 1px solid #000; /* Чёрная граница */
-      font-family: 'Courier New', monospace;
-      resize: none;
-    }
-    #submitWish, #finishButton {
-      padding: 10px 20px;
-      margin-top: 10px;
-      background: #000; /* Чёрный фон */
-      color: #fff; /* Белый текст */
-      border: 1px solid #fff; /* Белая граница */
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-    }
-    #submitWish:hover, #finishButton:hover {
-      background: #333; /* Осветление при наведении */
-    }
-    #wishMessage {
-      margin-top: 10px;
-      color: #fff; /* Белый текст */
-      font-size: 14px;
-    }
-    .dialog-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(30, 30, 30, 0.9);
-      padding: 20px;
-      border: 2px solid #5a3c2f;
-      border-radius: 5px;
-      text-align: center;
-      z-index: 20;
-    }
-    .pixel-text {
-      color: #fff;
-      font-size: 18px;
-      margin-bottom: 20px;
-      animation: flicker 0.2s infinite;
-    }
-    .dialog-box button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      background: #5a3c2f;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      animation: pulse 1s infinite;
-    }
-    .dialog-box button:hover {
-      background: #7a5c4f;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-  <div id="slide1" class="slide active"></div>
-  <div id="slide2" class="slide"></div>
-  <div id="slide3" class="slide"></div>
-  <div id="slide4" class="slide">
-    <video id="video1" preload="none">
-      <source src="before_altar.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div id="slide5" class="slide"></div>
-  <div id="slide6" class="slide"></div>
-  <div id="slide7" class="slide">
-    <video id="video2" preload="none">
-      <source src="burning_altar.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div id="slide8" class="slide"></div>
-  <div id="slide9" class="slide"></div>
-  <div id="slide10" class="slide">
-    <video id="video3" preload="none">
-      <source src="climbing_stairs.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div id="slide11" class="slide">
-    <video id="video4" preload="none">
-      <source src="death_by_dog.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div id="slide12" class="slide">
-    <div id="slide12Text"></div>
-    <form id="wishForm">
-      <label for="wishInput">Чего ещё можно желать?</label><br>
-      <textarea id="wishInput" name="wish"></textarea><br>
-      <input type="hidden" id="csrfToken" name="csrfToken">
-      <button type="submit" id="submitWish">Отправить</button>
-      <button id="finishButton" style="display: none;">Завершить</button>
-      <div id="wishMessage"></div>
-    </form>
-  </div>
-  <div class="slide" id="secret-slide">
-    <div class="dialog-box">
-      <div class="pixel-text">Ты согласна быть моей валентинкой?</div>
-      <button onclick="alert('Хихи, люблю тебя! До скорых встреч')">Да</button>
-      <button onclick="alert('Я знал, что ты скажешь да!')">Да</button>
-    </div>
-  </div>
+   <html lang="ru">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>День Рождения в стиле Silent Hill</title>
+     <style>
+       body {
+         margin: 0;
+         padding: 0;
+         background: #000;
+         height: 100vh;
+         overflow: hidden;
+         font-family: 'Courier New', monospace;
+       }
+       .slide {
+         display: none;
+         position: absolute;
+         top: 20px;
+         left: 20px;
+         color: #fff;
+         font-size: 16px;
+         white-space: pre-wrap;
+       }
+       .slide.active {
+         display: block !important;
+       }
+       .letter {
+         display: inline-block;
+         animation: flicker 0.1s infinite;
+       }
+       @keyframes flicker {
+         0% { opacity: 1; }
+         50% { opacity: 0.8; }
+         100% { opacity: 1; }
+       }
+       video {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+       }
+       #wishForm {
+         position: absolute;
+         top: 80%; /* Внизу */
+         left: 50%;
+         transform: translate(-50%, -50%);
+         color: #fff;
+         font-size: 16px;
+         text-align: center;
+         background: #000; /* Чёрный фон */
+         padding: 20px;
+         border: 1px solid #fff; /* Белая граница */
+         border-radius: 5px;
+         z-index: 20;
+         display: none; /* Скрыта до клика */
+       }
+       #wishInput {
+         width: 300px;
+         height: 100px;
+         padding: 10px;
+         margin-top: 10px;
+         background: #fff; /* Белый фон */
+         color: #000; /* Чёрный текст */
+         border: 1px solid #000; /* Чёрная граница */
+         font-family: 'Courier New', monospace;
+         resize: none;
+       }
+       #submitWish, #finishButton {
+         padding: 10px 20px;
+         margin-top: 10px;
+         background: #000; /* Чёрный фон */
+         color: #fff; /* Белый текст */
+         border: 1px solid #fff; /* Белая граница */
+         cursor: pointer;
+         font-family: 'Courier New', monospace;
+       }
+       #submitWish:hover, #finishButton:hover {
+         background: #333; /* Осветление при наведении */
+       }
+       #wishMessage {
+         margin-top: 10px;
+         color: #fff; /* Белый текст */
+         font-size: 14px;
+       }
+       .dialog-box {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         background: rgba(30, 30, 30, 0.9);
+         padding: 20px;
+         border: 2px solid #5a3c2f;
+         border-radius: 5px;
+         text-align: center;
+         z-index: 20;
+       }
+       .pixel-text {
+         color: #fff;
+         font-size: 18px;
+         margin-bottom: 20px;
+         animation: flicker 0.2s infinite;
+       }
+       .dialog-box button {
+         padding: 10px 20px;
+         margin: 0 10px;
+         background: #5a3c2f;
+         color: #fff;
+         border: none;
+         cursor: pointer;
+         font-family: 'Courier New', monospace;
+         animation: pulse 1s infinite;
+       }
+       .dialog-box button:hover {
+         background: #7a5c4f;
+       }
+       @keyframes pulse {
+         0% { opacity: 1; }
+         50% { opacity: 0.5; }
+         100% { opacity: 1; }
+       }
+     </style>
+   </head>
+   <body>
+     <div id="slide1" class="slide active"></div>
+     <div id="slide2" class="slide"></div>
+     <div id="slide3" class="slide"></div>
+     <div id="slide4" class="slide">
+       <video id="video1" preload="none">
+         <source src="before_altar.mp4" type="video/mp4">
+       </video>
+     </div>
+     <div id="slide5" class="slide"></div>
+     <div id="slide6" class="slide"></div>
+     <div id="slide7" class="slide">
+       <video id="video2" preload="none">
+         <source src="burning_altar.mp4" type="video/mp4">
+       </video>
+     </div>
+     <div id="slide8" class="slide"></div>
+     <div id="slide9" class="slide"></div>
+     <div id="slide10" class="slide">
+       <video id="video3" preload="none">
+         <source src="climbing_stairs.mp4" type="video/mp4">
+       </video>
+     </div>
+     <div id="slide11" class="slide">
+       <video id="video4" preload="none">
+         <source src="death_by_dog.mp4" type="video/mp4">
+       </video>
+     </div>
+     <div id="slide12" class="slide">
+       <div id="slide12Text"></div>
+       <form id="wishForm">
+         <label for="wishInput">Чего ещё можно желать?</label><br>
+         <textarea id="wishInput" name="wish"></textarea><br>
+         <button type="submit" id="submitWish">Отправить</button>
+         <button id="finishButton" style="display: none;">Завершить</button>
+         <div id="wishMessage"></div>
+       </form>
+     </div>
+     <div class="slide" id="secret-slide">
+       <div class="dialog-box">
+         <div class="pixel-text">Ты согласна быть моей валентинкой?</div>
+         <button onclick="alert('Хихи, люблю тебя! До скорых встреч')">Да</button>
+         <button onclick="alert('Я знал, что ты скажешь да!')">Да</button>
+       </div>
+     </div>
 
-  <script>
-    const slide1Text = "Вот и настал этот день>>>";
-    const slide2Text = "всегда казалось странным праздновать начало, почему никто не говорит о завершении? ведь оно и есть глоток нового для существа обреченного на смерть.";
-    const slide3Text = "для существа обреченного на смерть.";
-    const slide5Text = "а может это все сон//?";
-    const slide6Text = "для чего обречены находится здесь среди вод и земли?";
-    const slide8Text = "сознание обретает существование лишь в миг, когда ты открываешь голубые глаза свои, очнувшиеся от лучей солнца с мансарды";
-    const slide9Text = "но.., мы ушли от темы";
-    const slide10Text = "порой каждый шаг может стать последним, у нас он до сих пор не наступил";
-    const slide11Text = "в паспорте прибавился год, настоящая победа, чего ещё можно желать?";
+     <script>
+       const slide1Text = "Вот и настал этот день>>>";
+       const slide2Text = "всегда казалось странным праздновать начало, почему никто не говорит о завершении? ведь оно и есть глоток нового для существа обреченного на смерть.";
+       const slide3Text = "для существа обреченного на смерть.";
+       const slide5Text = "а может это все сон//?";
+       const slide6Text = "для чего обречены находится здесь среди вод и земли?";
+       const slide8Text = "сознание обретает существование лишь в миг, когда ты открываешь голубые глаза свои, очнувшиеся от лучей солнца с мансарды";
+       const slide9Text = "но.., мы ушли от темы";
+       const slide10Text = "порой каждый шаг может стать последним, у нас он до сих пор не наступил";
+       const slide11Text = "в паспорте прибавился год, настоящая победа, чего ещё можно желать?";
 
-    let currentSlide = 1;
-    let textCompleted = false;
-    let formShown = false;
+       let currentSlide = 1;
+       let textCompleted = false;
+       let formShown = false;
 
-    // Санитизация ввода (защита от XSS)
-    function sanitizeInput(input) {
-      const div = document.createElement("div");
-      div.textContent = input;
-      return div.innerHTML.replace(/</g, "<").replace(/>/g, ">");
-    }
+       // Санитизация ввода (защита от XSS)
+       function sanitizeInput(input) {
+         const div = document.createElement("div");
+         div.textContent = input;
+         return div.innerHTML.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+       }
 
-    // Получение CSRF-токена
-    async function fetchCsrfToken() {
-      try {
-        const response = await fetch('https://your-app.herokuapp.com/csrf-token.php');
-        const data = await response.json();
-        return data.csrfToken;
-      } catch (error) {
-        console.error("Error fetching CSRF token:", error);
-        return null;
-      }
-    }
+       function typeText(element, text, speed, callback) {
+         let i = 0;
+         element.innerHTML = "";
+         function type() {
+           if (i < text.length) {
+             element.innerHTML += `<span class="letter">${text.charAt(i)}</span>`;
+             i++;
+             setTimeout(type, speed);
+           } else {
+             textCompleted = true;
+             callback();
+           }
+         }
+         type();
+       }
 
-    function typeText(element, text, speed, callback) {
-      let i = 0;
-      element.innerHTML = "";
-      function type() {
-        if (i < text.length) {
-          element.innerHTML += `<span class="letter">${text.charAt(i)}</span>`;
-          i++;
-          setTimeout(type, speed);
-        } else {
-          textCompleted = true;
-          callback();
-        }
-      }
-      type();
-    }
+       function showSlide1() {
+         console.log("Showing slide 1");
+         const slide1 = document.getElementById("slide1");
+         typeText(slide1, slide1Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide2();
+           }, { once: true });
+         });
+       }
 
-    function showSlide1() {
-      console.log("Showing slide 1");
-      const slide1 = document.getElementById("slide1");
-      typeText(slide1, slide1Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide2();
-        }, { once: true });
-      });
-    }
+       function showSlide2() {
+         console.log("Showing slide 2");
+         const slide1 = document.getElementById("slide1");
+         const slide2 = document.getElementById("slide2");
+         slide1.classList.remove("active");
+         slide2.classList.add("active");
+         textCompleted = false;
+         typeText(slide2, slide2Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide3();
+           }, { once: true });
+         });
+       }
 
-    function showSlide2() {
-      console.log("Showing slide 2");
-      const slide1 = document.getElementById("slide1");
-      const slide2 = document.getElementById("slide2");
-      slide1.classList.remove("active");
-      slide2.classList.add("active");
-      textCompleted = false;
-      typeText(slide2, slide2Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide3();
-        }, { once: true });
-      });
-    }
+       function showSlide3() {
+         console.log("Showing slide 3");
+         const slide2 = document.getElementById("slide2");
+         const slide3 = document.getElementById("slide3");
+         slide2.classList.remove("active");
+         slide3.classList.add("active");
+         textCompleted = false;
+         typeText(slide3, slide3Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide4();
+           }, { once: true });
+         });
+       }
 
-    function showSlide3() {
-      console.log("Showing slide 3");
-      const slide2 = document.getElementById("slide2");
-      const slide3 = document.getElementById("slide3");
-      slide2.classList.remove("active");
-      slide3.classList.add("active");
-      textCompleted = false;
-      typeText(slide3, slide3Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide4();
-        }, { once: true });
-      });
-    }
+       function showSlide4() {
+         console.log("Showing slide 4 (video)");
+         const slide3 = document.getElementById("slide3");
+         const slide4 = document.getElementById("slide4");
+         slide3.classList.remove("active");
+         slide4.classList.add("active");
+         const video = document.getElementById("video1");
+         console.log("Attempting to play video1");
+         video.play().catch(e => console.error("Video1 playback failed:", e));
+         video.addEventListener("ended", () => {
+           console.log("Video1 ended, transitioning to slide 5");
+           showSlide5();
+         }, { once: true });
+       }
 
-    function showSlide4() {
-      console.log("Showing slide 4 (video)");
-      const slide3 = document.getElementById("slide3");
-      const slide4 = document.getElementById("slide4");
-      slide3.classList.remove("active");
-      slide4.classList.add("active");
-      const video = document.getElementById("video1");
-      console.log("Attempting to play video1");
-      video.play().catch(e => console.error("Video1 playback failed:", e));
-      video.addEventListener("ended", () => {
-        console.log("Video1 ended, transitioning to slide 5");
-        showSlide5();
-      }, { once: true });
-    }
+       function showSlide5() {
+         console.log("Showing slide 5");
+         const slide4 = document.getElementById("slide4");
+         const slide5 = document.getElementById("slide5");
+         slide4.classList.remove("active");
+         slide5.classList.add("active");
+         textCompleted = false;
+         typeText(slide5, slide5Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide6();
+           }, { once: true });
+         });
+       }
 
-    function showSlide5() {
-      console.log("Showing slide 5");
-      const slide4 = document.getElementById("slide4");
-      const slide5 = document.getElementById("slide5");
-      slide4.classList.remove("active");
-      slide5.classList.add("active");
-      textCompleted = false;
-      typeText(slide5, slide5Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide6();
-        }, { once: true });
-      });
-    }
+       function showSlide6() {
+         console.log("Showing slide 6");
+         const slide5 = document.getElementById("slide5");
+         const slide6 = document.getElementById("slide6");
+         slide5.classList.remove("active");
+         slide6.classList.add("active");
+         textCompleted = false;
+         typeText(slide6, slide6Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide7();
+           }, { once: true });
+         });
+       }
 
-    function showSlide6() {
-      console.log("Showing slide 6");
-      const slide5 = document.getElementById("slide5");
-      const slide6 = document.getElementById("slide6");
-      slide5.classList.remove("active");
-      slide6.classList.add("active");
-      textCompleted = false;
-      typeText(slide6, slide6Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide7();
-        }, { once: true });
-      });
-    }
+       function showSlide7() {
+         console.log("Showing slide 7 (video)");
+         const slide6 = document.getElementById("slide6");
+         const slide7 = document.getElementById("slide7");
+         slide6.classList.remove("active");
+         slide7.classList.add("active");
+         const video = document.getElementById("video2");
+         console.log("Attempting to play video2");
+         video.play().catch(e => console.error("Video2 playback failed:", e));
+         video.addEventListener("ended", () => {
+           console.log("Video2 ended, transitioning to slide 8");
+           showSlide8();
+         }, { once: true });
+       }
 
-    function showSlide7() {
-      console.log("Showing slide 7 (video)");
-      const slide6 = document.getElementById("slide6");
-      const slide7 = document.getElementById("slide7");
-      slide6.classList.remove("active");
-      slide7.classList.add("active");
-      const video = document.getElementById("video2");
-      console.log("Attempting to play video2");
-      video.play().catch(e => console.error("Video2 playback failed:", e));
-      video.addEventListener("ended", () => {
-        console.log("Video2 ended, transitioning to slide 8");
-        showSlide8();
-      }, { once: true });
-    }
+       function showSlide8() {
+         console.log("Showing slide 8");
+         const slide7 = document.getElementById("slide7");
+         const slide8 = document.getElementById("slide8");
+         slide7.classList.remove("active");
+         slide8.classList.add("active");
+         textCompleted = false;
+         typeText(slide8, slide8Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide9();
+           }, { once: true });
+         });
+       }
 
-    function showSlide8() {
-      console.log("Showing slide 8");
-      const slide7 = document.getElementById("slide7");
-      const slide8 = document.getElementById("slide8");
-      slide7.classList.remove("active");
-      slide8.classList.add("active");
-      textCompleted = false;
-      typeText(slide8, slide8Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide9();
-        }, { once: true });
-      });
-    }
+       function showSlide9() {
+         console.log("Showing slide 9");
+         const slide8 = document.getElementById("slide8");
+         const slide9 = document.getElementById("slide9");
+         slide8.classList.remove("active");
+         slide9.classList.add("active");
+         textCompleted = false;
+         typeText(slide9, slide9Text, 50, () => {
+           document.addEventListener("click", () => {
+             if (textCompleted) showSlide10();
+           }, { once: true });
+         });
+       }
 
-    function showSlide9() {
-      console.log("Showing slide 9");
-      const slide8 = document.getElementById("slide8");
-      const slide9 = document.getElementById("slide9");
-      slide8.classList.remove("active");
-      slide9.classList.add("active");
-      textCompleted = false;
-      typeText(slide9, slide9Text, 50, () => {
-        document.addEventListener("click", () => {
-          if (textCompleted) showSlide10();
-        }, { once: true });
-      });
-    }
+       function showSlide10() {
+         console.log("Showing slide 10 (video)");
+         const slide9 = document.getElementById("slide9");
+         const slide10 = document.getElementById("slide10");
+         slide9.classList.remove("active");
+         slide10.classList.add("active");
+         const video = document.getElementById("video3");
+         console.log("Attempting to play video3");
+         video.play().catch(e => console.error("Video3 playback failed:", e));
+         video.addEventListener("ended", () => {
+           console.log("Video3 ended, transitioning to slide 11");
+           showSlide11();
+         }, { once: true });
+       }
 
-    function showSlide10() {
-      console.log("Showing slide 10 (video)");
-      const slide9 = document.getElementById("slide9");
-      const slide10 = document.getElementById("slide10");
-      slide9.classList.remove("active");
-      slide10.classList.add("active");
-      const video = document.getElementById("video3");
-      console.log("Attempting to play video3");
-      video.play().catch(e => console.error("Video3 playback failed:", e));
-      video.addEventListener("ended", () => {
-        console.log("Video3 ended, transitioning to slide 11");
-        showSlide11();
-      }, { once: true });
-    }
+       function showSlide11() {
+         console.log("Showing slide 11 (video)");
+         const slide10 = document.getElementById("slide10");
+         const slide11 = document.getElementById("slide11");
+         slide10.classList.remove("active");
+         slide11.classList.add("active");
+         const video = document.getElementById("video4");
+         console.log("Attempting to play video4");
+         video.play().catch(e => console.error("Video4 playback failed:", e));
+         video.addEventListener("ended", () => {
+           console.log("Video4 ended, transitioning to slide 12");
+           showSlide12();
+         }, { once: true });
+       }
 
-    function showSlide11() {
-      console.log("Showing slide 11 (video)");
-      const slide10 = document.getElementById("slide10");
-      const slide11 = document.getElementById("slide11");
-      slide10.classList.remove("active");
-      slide11.classList.add("active");
-      const video = document.getElementById("video4");
-      console.log("Attempting to play video4");
-      video.play().catch(e => console.error("Video4 playback failed:", e));
-      video.addEventListener("ended", () => {
-        console.log("Video4 ended, transitioning to slide 12");
-        showSlide12();
-      }, { once: true });
-    }
+       function showSlide12() {
+         console.log("Showing slide 12 (text and form)");
+         const slide11 = document.getElementById("slide11");
+         const slide12 = document.getElementById("slide12");
+         const slide12Text = document.getElementById("slide12Text");
+         slide11.classList.remove("active");
+         slide12.classList.add("active");
+         textCompleted = false;
 
-    async function showSlide12() {
-      console.log("Showing slide 12 (text and form)");
-      const slide11 = document.getElementById("slide11");
-      const slide12 = document.getElementById("slide12");
-      const slide12Text = document.getElementById("slide12Text");
-      slide11.classList.remove("active");
-      slide12.classList.add("active");
-      textCompleted = false;
+         typeText(slide12Text, slide11Text, 50, () => {
+           // Показ формы по клику
+           document.addEventListener("click", () => {
+             if (!formShown) {
+               const form = document.getElementById("wishForm");
+               const wishInput = document.getElementById("wishInput");
+               const wishMessage = document.getElementById("wishMessage");
+               const submitButton = document.getElementById("submitWish");
+               const finishButton = document.getElementById("finishButton");
+               form.style.display = "block";
+               formShown = true;
 
-      // Получаем CSRF-токен
-      const csrfToken = await fetchCsrfToken();
-      const csrfTokenInput = document.getElementById("csrfToken");
-      csrfTokenInput.value = csrfToken || '';
+               form.addEventListener("submit", async (e) => {
+                 e.preventDefault();
+                 const wish = wishInput.value.trim();
+                 if (wish) {
+                   const sanitizedWish = sanitizeInput(wish);
+                   try {
+                     const response = await fetch('https://your-app.onrender.com/save-wish.php', {
+                       method: 'POST',
+                       headers: {
+                         'Content-Type': 'application/json'
+                       },
+                       body: JSON.stringify({ wish: sanitizedWish })
+                     });
+                     const data = await response.json();
+                     if (data.success) {
+                       wishMessage.textContent = `Твоё желание: ${sanitizedWish}`;
+                       submitButton.style.display = "none";
+                       finishButton.style.display = "inline-block";
+                     } else {
+                       wishMessage.textContent = `Ошибка: ${data.error}`;
+                     }
+                   } catch (error) {
+                     console.error("Error saving wish:", error);
+                     wishMessage.textContent = "Ошибка при сохранении желания";
+                   }
+                 } else {
+                   wishMessage.textContent = "Напиши своё желание!";
+                 }
+               }, { once: true });
 
-      typeText(slide12Text, slide11Text, 50, () => {
-        // Показ формы по клику
-        document.addEventListener("click", () => {
-          if (!formShown) {
-            const form = document.getElementById("wishForm");
-            const wishInput = document.getElementById("wishInput");
-            const wishMessage = document.getElementById("wishMessage");
-            const submitButton = document.getElementById("submitWish");
-            const finishButton = document.getElementById("finishButton");
-            form.style.display = "block";
-            formShown = true;
+               finishButton.addEventListener("click", () => {
+                 showSecretSlide();
+               }, { once: true });
+             }
+           }, { once: true });
+         });
+       }
 
-            form.addEventListener("submit", async (e) => {
-              e.preventDefault();
-              const wish = wishInput.value.trim();
-              if (wish) {
-                const sanitizedWish = sanitizeInput(wish);
-                try {
-                  const response = await fetch('https://your-app.herokuapp.com/save-wish.php', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'X-CSRF-Token': csrfTokenInput.value
-                    },
-                    body: JSON.stringify({ wish: sanitizedWish })
-                  });
-                  const data = await response.json();
-                  if (data.success) {
-                    wishMessage.textContent = `Твоё желание: ${sanitizedWish}`;
-                    submitButton.style.display = "none";
-                    finishButton.style.display = "inline-block";
-                  } else {
-                    wishMessage.textContent = `Ошибка: ${data.error}`;
-                  }
-                } catch (error) {
-                  console.error("Error saving wish:", error);
-                  wishMessage.textContent = "Ошибка при сохранении желания";
-                }
-              } else {
-                wishMessage.textContent = "Напиши своё желание!";
-              }
-            }, { once: true });
+       function showSecretSlide() {
+         console.log("Showing secret slide");
+         const slide12 = document.getElementById("slide12");
+         const secretSlide = document.getElementById("secret-slide");
+         slide12.classList.remove("active");
+         secretSlide.classList.add("active");
+       }
 
-            finishButton.addEventListener("click", () => {
-              showSecretSlide();
-            }, { once: true });
-          }
-        }, { once: true });
-      });
-    }
-
-    function showSecretSlide() {
-      console.log("Showing secret slide");
-      const slide12 = document.getElementById("slide12");
-      const secretSlide = document.getElementById("secret-slide");
-      slide12.classList.remove("active");
-      secretSlide.classList.add("active");
-    }
-
-    showSlide1();
-  </script>
-</body>
-</html>
+       showSlide1();
+     </script>
+   </body>
+   </html>
