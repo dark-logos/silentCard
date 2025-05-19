@@ -68,6 +68,8 @@
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
       animation: flicker 0.2s infinite;
+      z-index: 20; /* Поверх текста */
+      display: none; /* Скрыта до анимации текста */
     }
     #wishInput {
       width: 300px;
@@ -129,7 +131,8 @@
     </video>
   </div>
   <div id="slide12" class="slide">
-    <form id="wishForm" style="display: none;">
+    <div id="slide12Text"></div>
+    <form id="wishForm">
       <label for="wishInput">Чего ещё можно желать?</label><br>
       <textarea id="wishInput" name="wish"></textarea><br>
       <button type="submit" id="submitWish">Отправить</button>
@@ -337,19 +340,20 @@
     }
 
     function showSlide12() {
-      console.log("Showing slide 12 (form)");
+      console.log("Showing slide 12 (text and form)");
       const slide11 = document.getElementById("slide11");
       const slide12 = document.getElementById("slide12");
+      const slide12Text = document.getElementById("slide12Text");
       slide11.classList.remove("active");
       slide12.classList.add("active");
       textCompleted = false;
-      typeText(slide12, slide11Text, 50, () => {
+      typeText(slide12Text, slide11Text, 50, () => {
         const form = document.getElementById("wishForm");
         const wishInput = document.getElementById("wishInput");
         const wishMessage = document.getElementById("wishMessage");
         const submitButton = document.getElementById("submitWish");
         const finishButton = document.getElementById("finishButton");
-        form.style.display = "block";
+        form.style.display = "block"; // Показ формы после текста
 
         form.addEventListener("submit", (e) => {
           e.preventDefault();
@@ -366,7 +370,7 @@
 
         finishButton.addEventListener("click", () => {
           alert("Спасибо за твоё желание! Открытка завершена.");
-          // Можно добавить другое действие, например, перезапуск или редирект
+          // Можно добавить перезапуск или редирект
         }, { once: true });
       });
     }
