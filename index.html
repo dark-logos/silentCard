@@ -56,18 +56,16 @@
     }
     #wishForm {
       position: absolute;
-      top: 70%; /* Ниже центра */
+      top: 80%; /* Ещё ниже */
       left: 50%;
       transform: translate(-50%, -50%);
       color: #fff;
       font-size: 16px;
       text-align: center;
-      background: rgba(30, 30, 30, 0.8);
+      background: #000; /* Чёрный фон */
       padding: 20px;
-      border: 2px solid #5a3c2f; /* Ржавый стиль */
+      border: 1px solid #fff; /* Белая граница */
       border-radius: 5px;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-      animation: flicker 0.2s infinite;
       z-index: 20;
       display: none;
     }
@@ -76,28 +74,27 @@
       height: 100px;
       padding: 10px;
       margin-top: 10px;
-      background: #222;
-      color: #fff;
-      border: 1px solid #5a3c2f;
+      background: #fff; /* Белый фон */
+      color: #000; /* Чёрный текст */
+      border: 1px solid #000; /* Чёрная граница */
       font-family: 'Courier New', monospace;
       resize: none;
     }
     #submitWish, #finishButton {
       padding: 10px 20px;
       margin-top: 10px;
-      background: #5a3c2f;
-      color: #fff;
-      border: none;
+      background: #000; /* Чёрный фон */
+      color: #fff; /* Белый текст */
+      border: 1px solid #fff; /* Белая граница */
       cursor: pointer;
       font-family: 'Courier New', monospace;
-      animation: pulse 1s infinite;
     }
     #submitWish:hover, #finishButton:hover {
-      background: #7a5c4f;
+      background: #333; /* Лёгкое осветление при наведении */
     }
     #wishMessage {
       margin-top: 10px;
-      color: #ff6666;
+      color: #fff; /* Белый текст */
       font-size: 14px;
     }
     .dialog-box {
@@ -121,11 +118,15 @@
     .dialog-box button {
       padding: 10px 20px;
       margin: 0 10px;
+      background: #5a3c2f;
       color: #fff;
       border: none;
       cursor: pointer;
       font-family: 'Courier New', monospace;
       animation: pulse 1s infinite;
+    }
+    .dialog-box button:hover {
+      background: #7a5c4f;
     }
   </style>
 </head>
@@ -167,6 +168,13 @@
       <button id="finishButton" style="display: none;">Завершить</button>
       <div id="wishMessage"></div>
     </form>
+  </div>
+  <div class="slide" id="secret-slide">
+    <div class="dialog-box">
+      <div class="pixel-text">Ты согласна быть моей валентинкой?</div>
+      <button onclick="alert('Хихи, люблю тебя! До скорых встреч')">Да</button>
+      <button onclick="alert('Я знал, что ты скажешь да!')">Да</button>
+    </div>
   </div>
 
   <script>
