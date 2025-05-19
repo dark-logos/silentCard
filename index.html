@@ -62,22 +62,41 @@
       color: #fff;
       font-size: 16px;
       text-align: center;
+      background: rgba(30, 30, 30, 0.8);
+      padding: 20px;
+      border: 2px solid #5a3c2f; /* Ржавый стиль */
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+      animation: flicker 0.2s infinite;
     }
     #wishInput {
       width: 300px;
+      height: 100px;
       padding: 10px;
       margin-top: 10px;
-      background: #333;
+      background: #222;
       color: #fff;
-      border: none;
+      border: 1px solid #5a3c2f;
+      font-family: 'Courier New', monospace;
+      resize: none;
     }
-    #submitWish {
+    #submitWish, #finishButton {
       padding: 10px 20px;
       margin-top: 10px;
-      background: #555;
+      background: #5a3c2f;
       color: #fff;
       border: none;
       cursor: pointer;
+      font-family: 'Courier New', monospace;
+      animation: pulse 1s infinite;
+    }
+    #submitWish:hover, #finishButton:hover {
+      background: #7a5c4f;
+    }
+    #wishMessage {
+      margin-top: 10px;
+      color: #ff6666;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -86,34 +105,36 @@
   <div id="slide2" class="slide"></div>
   <div id="slide3" class="slide"></div>
   <div id="slide4" class="slide">
-    <video id="video1" autoplay>
+    <video id="video1" preload="none">
       <source src="before_altar.mp4" type="video/mp4">
     </video>
   </div>
   <div id="slide5" class="slide"></div>
   <div id="slide6" class="slide"></div>
   <div id="slide7" class="slide">
-    <video id="video2" autoplay>
+    <video id="video2" preload="none">
       <source src="burning_altar.mp4" type="video/mp4">
     </video>
   </div>
   <div id="slide8" class="slide"></div>
   <div id="slide9" class="slide"></div>
   <div id="slide10" class="slide">
-    <video id="video3" autoplay>
+    <video id="video3" preload="none">
       <source src="climbing_stairs.mp4" type="video/mp4">
     </video>
   </div>
   <div id="slide11" class="slide">
-    <video id="video4" autoplay>
+    <video id="video4" preload="none">
       <source src="death_by_dog.mp4" type="video/mp4">
     </video>
   </div>
   <div id="slide12" class="slide">
-    <form id="wishForm">
+    <form id="wishForm" style="display: none;">
       <label for="wishInput">Чего ещё можно желать?</label><br>
-      <input type="text" id="wishInput" name="wish"><br>
+      <textarea id="wishInput" name="wish"></textarea><br>
       <button type="submit" id="submitWish">Отправить</button>
+      <button id="finishButton" style="display: none;">Завершить</button>
+      <div id="wishMessage"></div>
     </form>
   </div>
 
@@ -198,8 +219,10 @@
       slide3.classList.remove("active");
       slide4.classList.add("active");
       const video = document.getElementById("video1");
-      video.play().catch(e => console.error("Video playback failed:", e));
+      console.log("Attempting to play video1");
+      video.play().catch(e => console.error("Video1 playback failed:", e));
       video.addEventListener("ended", () => {
+        console.log("Video1 ended, transitioning to slide 5");
         showSlide5();
       }, { once: true });
     }
@@ -243,8 +266,10 @@
       slide6.classList.remove("active");
       slide7.classList.add("active");
       const video = document.getElementById("video2");
-      video.play().catch(e => console.error("Video playback failed:", e));
+      console.log("Attempting to play video2");
+      video.play().catch(e => console.error("Video2 playback failed:", e));
       video.addEventListener("ended", () => {
+        console.log("Video2 ended, transitioning to slide 8");
         showSlide8();
       }, { once: true });
     }
@@ -288,8 +313,10 @@
       slide9.classList.remove("active");
       slide10.classList.add("active");
       const video = document.getElementById("video3");
-      video.play().catch(e => console.error("Video playback failed:", e));
+      console.log("Attempting to play video3");
+      video.play().catch(e => console.error("Video3 playback failed:", e));
       video.addEventListener("ended", () => {
+        console.log("Video3 ended, transitioning to slide 11");
         showSlide11();
       }, { once: true });
     }
@@ -301,8 +328,10 @@
       slide10.classList.remove("active");
       slide11.classList.add("active");
       const video = document.getElementById("video4");
-      video.play().catch(e => console.error("Video playback failed:", e));
+      console.log("Attempting to play video4");
+      video.play().catch(e => console.error("Video4 playback failed:", e));
       video.addEventListener("ended", () => {
+        console.log("Video4 ended, transitioning to slide 12");
         showSlide12();
       }, { once: true });
     }
@@ -316,12 +345,29 @@
       textCompleted = false;
       typeText(slide12, slide11Text, 50, () => {
         const form = document.getElementById("wishForm");
+        const wishInput = document.getElementById("wishInput");
+        const wishMessage = document.getElementById("wishMessage");
+        const submitButton = document.getElementById("submitWish");
+        const finishButton = document.getElementById("finishButton");
         form.style.display = "block";
+
         form.addEventListener("submit", (e) => {
           e.preventDefault();
-          const wish = document.getElementById("wishInput").value;
-          alert(`Твоё желание: ${wish}`);
-        });
+          const wish = wishInput.value.trim();
+          if (wish) {
+            localStorage.setItem("birthdayWish", wish);
+            wishMessage.textContent = `Твоё желание: ${wish}`;
+            submitButton.style.display = "none";
+            finishButton.style.display = "inline-block";
+          } else {
+            wishMessage.textContent = "Напиши своё желание!";
+          }
+        }, { once: true });
+
+        finishButton.addEventListener("click", () => {
+          alert("Спасибо за твоё желание! Открытка завершена.");
+          // Можно добавить другое действие, например, перезапуск или редирект
+        }, { once: true });
       });
     }
 
