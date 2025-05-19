@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>День Рождения в стиле Silent Hill</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.0/pixi.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -35,14 +34,10 @@
       50% { opacity: 0.8; }
       100% { opacity: 1; }
     }
-    #slide4 {
+    video {
       width: 100%;
       height: 100%;
-      display: none;
-    }
-    #pixi-container {
-      width: 100%;
-      height: 100%;
+      object-fit: cover;
     }
     #nextSlideButton {
       position: absolute;
@@ -59,6 +54,31 @@
       50% { opacity: 0.5; }
       100% { opacity: 1; }
     }
+    #wishForm {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+    }
+    #wishInput {
+      width: 300px;
+      padding: 10px;
+      margin-top: 10px;
+      background: #333;
+      color: #fff;
+      border: none;
+    }
+    #submitWish {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background: #555;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -66,26 +86,62 @@
   <div id="slide2" class="slide"></div>
   <div id="slide3" class="slide"></div>
   <div id="slide4" class="slide">
-    <div id="pixi-container"></div>
+    <video id="video1" autoplay>
+      <source src="before_altar.mp4" type="video/mp4">
+    </video>
+    <audio id="audio1" autoplay>
+      <source src="before_altar.mp3" type="audio/mp3">
+    </audio>
   </div>
   <div id="slide5" class="slide"></div>
-
-  <!-- Audio -->
-  <audio id="breathing" loop>
-    <source src="breathing.mp3" type="audio/mp3">
-  </audio>
-  <audio id="water" loop>
-    <source src="water.mp3" type="audio/mp3">
-  </audio>
-  <audio id="chains">
-    <source src="chains.mp3" type="audio/mp3">
-  </audio>
+  <div id="slide6" class="slide"></div>
+  <div id="slide7" class="slide">
+    <video id="video2" autoplay>
+      <source src="burning_altar.mp4" type="video/mp4">
+    </video>
+    <audio id="audio2" autoplay>
+      <source src="burning_altar.mp3" type="audio/mp3">
+    </audio>
+  </div>
+  <div id="slide8" class="slide"></div>
+  <div id="slide9" class="slide"></div>
+  <div id="slide10" class="slide">
+    <video id="video3" autoplay>
+      <source src="climbing_stairs.mp4" type="video/mp4">
+    </video>
+    <audio id="audio3" autoplay>
+      <source src="climbing_stairs.mp3" type="audio/mp3">
+    </audio>
+  </div>
+  <div id="slide11" class="slide">
+    <video id="video4" autoplay>
+      <source src="death_by_dog.mp4" type="video/mp4">
+    </video>
+    <audio id="audio4" autoplay>
+      <source src="death_by_dog.mp3" type="audio/mp3">
+    </audio>
+  </div>
+  <div id="slide12" class="slide">
+    <form id="wishForm">
+      <label for="wishInput">Чего ещё можно желать?</label><br>
+      <input type="text" id="wishInput" name="wish"><br>
+      <button type="submit" id="submitWish">Отправить</button>
+    </form>
+  </div>
 
   <script>
     const slide1Text = "Вот и настал этот день>>>";
     const slide2Text = "всегда казалось странным праздновать начало, почему никто не говорит о завершении? ведь оно и есть глоток нового для существа обреченного на смерть.";
     const slide3Text = "для существа обреченного на смерть.";
-    const slide5Text = "было бы так просто.";
+    const slide5Text = "а может это все сон//?";
+    const slide6Text = "для чего обречены находится здесь среди вод и земли?";
+    const slide8Text = "сознание обретает существование лишь в миг, когда ты открываешь голубые глаза свои, очнувшиеся от лучей солнца с мансарды";
+    const slide9Text = "но.., мы ушли от темы";
+    const slide10Text = "порой каждый шаг может стать последним, у нас он до сих пор не наступил";
+    const slide11Text = "в паспорте прибавился год, настоящая победа, чего ещё можно желать?";
+
+    let currentSlide = 1;
+    let textCompleted = false;
 
     function typeText(element, text, speed, callback) {
       let i = 0;
@@ -96,6 +152,7 @@
           i++;
           setTimeout(type, speed);
         } else {
+          textCompleted = true;
           callback();
         }
       }
@@ -103,6 +160,7 @@
     }
 
     function showSlide1() {
+      console.log("Showing slide 1");
       const slide1 = document.getElementById("slide1");
       typeText(slide1, slide1Text, 50, () => {
         const nextButton = document.createElement("div");
@@ -114,9 +172,12 @@
     }
 
     function showSlide2() {
-      document.getElementById("slide1").classList.remove("active");
+      console.log("Showing slide 2");
+      const slide1 = document.getElementById("slide1");
       const slide2 = document.getElementById("slide2");
+      slide1.classList.remove("active");
       slide2.classList.add("active");
+      textCompleted = false;
       typeText(slide2, slide2Text, 50, () => {
         const nextButton = document.createElement("div");
         nextButton.id = "nextSlideButton";
@@ -127,9 +188,12 @@
     }
 
     function showSlide3() {
-      document.getElementById("slide2").classList.remove("active");
+      console.log("Showing slide 3");
+      const slide2 = document.getElementById("slide2");
       const slide3 = document.getElementById("slide3");
+      slide2.classList.remove("active");
       slide3.classList.add("active");
+      textCompleted = false;
       typeText(slide3, slide3Text, 50, () => {
         const nextButton = document.createElement("div");
         nextButton.id = "nextSlideButton";
@@ -140,112 +204,135 @@
     }
 
     function showSlide4() {
-      document.getElementById("slide3").classList.remove("active");
-      document.getElementById("slide4").classList.add("active");
-      startGame();
+      console.log("Showing slide 4 (video)");
+      const slide3 = document.getElementById("slide3");
+      const slide4 = document.getElementById("slide4");
+      slide3.classList.remove("active");
+      slide4.classList.add("active");
+      const video = document.getElementById("video1");
+      video.play();
+      video.addEventListener("ended", () => {
+        showSlide5();
+      });
     }
 
     function showSlide5() {
-      document.getElementById("slide4").classList.remove("active");
+      console.log("Showing slide 5");
+      const slide4 = document.getElementById("slide4");
       const slide5 = document.getElementById("slide5");
+      slide4.classList.remove("active");
       slide5.classList.add("active");
+      textCompleted = false;
       typeText(slide5, slide5Text, 50, () => {
         const nextButton = document.createElement("div");
         nextButton.id = "nextSlideButton";
         nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide6);
         slide5.appendChild(nextButton);
       });
     }
 
-    function startGame() {
-      const breathingSound = document.getElementById("breathing");
-      const waterSound = document.getElementById("water");
-      const chainsSound = document.getElementById("chains");
-
-      const app = new PIXI.Application({
-        resizeTo: window,
-        backgroundColor: 0x000000,
+    function showSlide6() {
+      console.log("Showing slide 6");
+      const slide5 = document.getElementById("slide5");
+      const slide6 = document.getElementById("slide6");
+      slide5.classList.remove("active");
+      slide6.classList.add("active");
+      textCompleted = false;
+      typeText(slide6, slide6Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide7);
+        slide6.appendChild(nextButton);
       });
-      document.getElementById("pixi-container").appendChild(app.view);
-
-      const container = new PIXI.Container();
-      app.stage.addChild(container);
-
-      const loader = PIXI.Loader.shared;
-      loader
-        .add("feet", "feet.png")
-        .add("eyes", "eyes.png")
-        .add("fog", "fog.png")
-        .load(setup);
-
-      let gameState = "waiting";
-      let symbolShown = false;
-      let running = false;
-      let fogSprite, fogAlpha = 0;
-      let time = 0;
-
-      function setup() {
-        breathingSound.play().catch(() => {});
-        waterSound.play().catch(() => {});
-
-        const feet = new PIXI.Sprite(loader.resources.feet.texture);
-        feet.anchor.set(0.5, 0);
-        feet.x = app.screen.width / 2;
-        feet.y = app.screen.height - 140;
-        feet.alpha = 0.8;
-        container.addChild(feet);
-
-        const eyes = new PIXI.Sprite(loader.resources.eyes.texture);
-        eyes.anchor.set(0.5);
-        eyes.x = app.screen.width / 2 + 150;
-        eyes.y = app.screen.height / 2 - 100;
-        eyes.alpha = 0;
-        container.addChild(eyes);
-
-        fogSprite = new PIXI.Sprite(loader.resources.fog.texture);
-        fogSprite.width = app.screen.width;
-        fogSprite.height = app.screen.height;
-        fogSprite.alpha = 0;
-        container.addChild(fogSprite);
-
-        app.stage.interactive = true;
-        app.stage.on("pointerdown", () => {
-          if (gameState === "waiting") {
-            gameState = "walking";
-            setTimeout(() => {
-              eyes.alpha = 1;
-              chainsSound.play().catch(() => {});
-              symbolShown = true;
-            }, 4000);
-            setTimeout(() => {
-              running = true;
-            }, 6000);
-            setTimeout(() => {
-              fogAlpha = 0.01;
-            }, 8500);
-            setTimeout(() => {
-              breathingSound.pause();
-              waterSound.pause();
-              showSlide5();
-            }, 10000);
-          }
-        });
-
-        app.ticker.add((delta) => {
-          time += delta;
-
-          if (running) {
-            container.x = -Math.sin(time * 0.1) * 4;
-          }
-
-          if (fogAlpha > 0 && fogSprite.alpha < 1) {
-            fogSprite.alpha += 0.01;
-          }
-        });
-      }
     }
 
-    // Старт
+    function showSlide7() {
+      console.log("Showing slide 7 (video)");
+      const slide6 = document.getElementById("slide6");
+      const slide7 = document.getElementById("slide7");
+      slide6.classList.remove("active");
+      slide7.classList.add("active");
+      const video = document.getElementById("video2");
+      video.play();
+      video.addEventListener("ended", () => {
+        showSlide8();
+      });
+    }
+
+    function showSlide8() {
+      console.log("Showing slide 8");
+      const slide7 = document.getElementById("slide7");
+      const slide8 = document.getElementById("slide8");
+      slide7.classList.remove("active");
+      slide8.classList.add("active");
+      textCompleted = false;
+      typeText(slide8, slide8Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide9);
+        slide8.appendChild(nextButton);
+      });
+    }
+
+    function showSlide9() {
+      console.log("Showing slide 9");
+      const slide8 = document.getElementById("slide8");
+      const slide9 = document.getElementById("slide9");
+      slide8.classList.remove("active");
+      slide9.classList.add("active");
+      textCompleted = false;
+      typeText(slide9, slide9Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide10);
+        slide9.appendChild(nextButton);
+      });
+    }
+
+    function showSlide10() {
+      console.log("Showing slide 10 (video)");
+      const slide9 = document.getElementById("slide9");
+      const slide10 = document.getElementById("slide10");
+      slide9.classList.remove("active");
+      slide10.classList.add("active");
+      const video = document.getElementById("video3");
+      video.play();
+      video.addEventListener("ended", () => {
+        showSlide11();
+      });
+    }
+
+    function showSlide11() {
+      console.log("Showing slide 11 (video)");
+      const slide10 = document.getElementById("slide10");
+      const slide11 = document.getElementById("slide11");
+      slide10.classList.remove("active");
+      slide11.classList.add("active");
+      const video = document.getElementById("video4");
+      video.play();
+      video.addEventListener("ended", () => {
+        showSlide12();
+      });
+    }
+
+    function showSlide12() {
+      console.log("Showing slide 12 (form)");
+      const slide11 = document.getElementById("slide11");
+      const slide12 = document.getElementById("slide12");
+      slide11.classList.remove("active");
+      slide12.classList.add("active");
+      const form = document.getElementById("wishForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const wish = document.getElementById("wishInput").value;
+        alert(`Твоё желание: ${wish}`);
+      });
+    }
+
     showSlide1();
   </script>
 </body>
