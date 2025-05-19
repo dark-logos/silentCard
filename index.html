@@ -100,6 +100,37 @@
       color: #ff6666;
       font-size: 14px;
     }
+    .dialog-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30, 30, 30, 0.9);
+      padding: 20px;
+      border: 2px solid #5a3c2f;
+      border-radius: 5px;
+      text-align: center;
+      z-index: 20;
+    }
+    .pixel-text {
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 20px;
+      animation: flicker 0.2s infinite;
+    }
+    .dialog-box button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      background: #5a3c2f;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      animation: pulse 1s infinite;
+    }
+    .dialog-box button:hover {
+      background: #7a5c4f;
+    }
   </style>
 </head>
 <body>
@@ -139,6 +170,13 @@
       <button id="finishButton" style="display: none;">Завершить</button>
       <div id="wishMessage"></div>
     </form>
+  </div>
+  <div class="slide" id="secret-slide">
+    <div class="dialog-box">
+      <div class="pixel-text">Ты согласна быть моей валентинкой?</div>
+      <button onclick="alert('Хихи, люблю тебя! До скорых встреч')">Да</button>
+      <button onclick="alert('Я знал, что ты скажешь да!')">Да</button>
+    </div>
   </div>
 
   <script>
@@ -369,10 +407,17 @@
         }, { once: true });
 
         finishButton.addEventListener("click", () => {
-          alert("Спасибо за твоё желание! Открытка завершена.");
-          // Можно добавить перезапуск или редирект
+          showSecretSlide();
         }, { once: true });
       });
+    }
+
+    function showSecretSlide() {
+      console.log("Showing secret slide");
+      const slide12 = document.getElementById("slide12");
+      const secretSlide = document.getElementById("secret-slide");
+      slide12.classList.remove("active");
+      secretSlide.classList.add("active");
     }
 
     showSlide1();
