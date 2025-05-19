@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>День Рождения в стиле Silent Hill</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.0/pixi.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -23,7 +24,7 @@
       white-space: pre-wrap;
     }
     .slide.active {
-      display: block;
+      display: block !important;
     }
     .letter {
       display: inline-block;
@@ -35,24 +36,23 @@
       100% { opacity: 1; }
     }
     #slide4 {
+      width: 100%;
+      height: 100%;
       display: none;
+    }
+    #pixi-container {
       width: 100%;
       height: 100%;
     }
-    #gameCanvas {
-      width: 100%;
-      height: 100%;
-      background: #111;
-    }
-    #moveIcon {
+    #nextSlideButton {
       position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 100px;
+      left: 20px;
       color: #fff;
-      font-size: 24px;
+      font-size: 16px;
       cursor: pointer;
       animation: pulse 1s infinite;
+      z-index: 10;
     }
     @keyframes pulse {
       0% { opacity: 1; }
@@ -66,28 +66,26 @@
   <div id="slide2" class="slide"></div>
   <div id="slide3" class="slide"></div>
   <div id="slide4" class="slide">
-    <canvas id="gameCanvas"></canvas>
-    <div id="moveIcon">➤</div>
+    <div id="pixi-container"></div>
   </div>
   <div id="slide5" class="slide"></div>
 
+  <!-- Audio -->
   <audio id="breathing" loop>
-    <source src="https://freesound.org/data/previews/68/68207_634166-lq.mp3" type="audio/mp3">
+    <source src="breathing.mp3" type="audio/mp3">
   </audio>
   <audio id="water" loop>
-    <source src="https://freesound.org/data/previews/136/136174_2437858-lq.mp3" type="audio/mp3">
+    <source src="water.mp3" type="audio/mp3">
   </audio>
   <audio id="chains">
-    <source src="https://freesound.org/data/previews/145/145443_2527473-lq.mp3" type="audio/mp3">
+    <source src="chains.mp3" type="audio/mp3">
   </audio>
 
   <script>
     const slide1Text = "Вот и настал этот день>>>";
-    const slide2Text = "всегда казалось праздновать начало, почему никто не говорит о завершении? ведь оно и есть глоток нового для существа обреченного на смерть.";
+    const slide2Text = "всегда казалось странным праздновать начало, почему никто не говорит о завершении? ведь оно и есть глоток нового для существа обреченного на смерть.";
     const slide3Text = "для существа обреченного на смерть.";
     const slide5Text = "было бы так просто.";
-
-    let currentSlide = 1;
 
     function typeText(element, text, speed, callback) {
       let i = 0;
@@ -97,8 +95,8 @@
           element.innerHTML += `<span class="letter">${text.charAt(i)}</span>`;
           i++;
           setTimeout(type, speed);
-        } else if (callback) {
-          setTimeout(callback, 2000);
+        } else {
+          callback();
         }
       }
       type();
@@ -106,152 +104,148 @@
 
     function showSlide1() {
       const slide1 = document.getElementById("slide1");
-      typeText(slide1, slide1Text, 50, showSlide2);
+      typeText(slide1, slide1Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide2);
+        slide1.appendChild(nextButton);
+      });
     }
 
     function showSlide2() {
-      const slide1 = document.getElementById("slide1");
+      document.getElementById("slide1").classList.remove("active");
       const slide2 = document.getElementById("slide2");
-      slide1.classList.remove("active");
       slide2.classList.add("active");
-      typeText(slide2, slide2Text, 50, showSlide3);
+      typeText(slide2, slide2Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide3);
+        slide2.appendChild(nextButton);
+      });
     }
 
     function showSlide3() {
-      const slide2 = document.getElementById("slide2");
+      document.getElementById("slide2").classList.remove("active");
       const slide3 = document.getElementById("slide3");
-      slide2.classList.remove("active");
       slide3.classList.add("active");
-      typeText(slide3, slide3Text, 50, showSlide4);
+      typeText(slide3, slide3Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        nextButton.addEventListener("click", showSlide4);
+        slide3.appendChild(nextButton);
+      });
     }
 
     function showSlide4() {
-      const slide3 = document.getElementById("slide3");
-      const slide4 = document.getElementById("slide4");
-      slide3.classList.remove("active");
-      slide4.classList.add("active");
+      document.getElementById("slide3").classList.remove("active");
+      document.getElementById("slide4").classList.add("active");
       startGame();
     }
 
     function showSlide5() {
-      const slide4 = document.getElementById("slide4");
+      document.getElementById("slide4").classList.remove("active");
       const slide5 = document.getElementById("slide5");
-      slide4.classList.remove("active");
       slide5.classList.add("active");
-      typeText(slide5, slide5Text, 50);
+      typeText(slide5, slide5Text, 50, () => {
+        const nextButton = document.createElement("div");
+        nextButton.id = "nextSlideButton";
+        nextButton.textContent = "Далее ➤";
+        slide5.appendChild(nextButton);
+      });
     }
-
-    // Мини-игра
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const moveIcon = document.getElementById("moveIcon");
-    const breathingSound = document.getElementById("breathing");
-    const waterSound = document.getElementById("water");
-    const chainsSound = document.getElementById("chains");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let gameState = "waiting";
-    let backgroundX = 0;
-    let eyesVisible = false;
-    let running = false;
-    let ladderVisible = false;
-    let fogAlpha = 0;
 
     function startGame() {
-      moveIcon.addEventListener("click", startMoving);
-      requestAnimationFrame(gameLoop);
-    }
+      const breathingSound = document.getElementById("breathing");
+      const waterSound = document.getElementById("water");
+      const chainsSound = document.getElementById("chains");
 
-    function startMoving() {
-      if (gameState === "waiting") {
-        gameState = "moving";
-        moveIcon.style.display = "none";
-        // Запускаем звуки только после клика
-        breathingSound.play().catch(e => console.log("Audio play failed:", e));
-        waterSound.play().catch(e => console.log("Audio play failed:", e));
-        setTimeout(showEyes, 5000);
+      const app = new PIXI.Application({
+        resizeTo: window,
+        backgroundColor: 0x000000,
+      });
+      document.getElementById("pixi-container").appendChild(app.view);
+
+      const container = new PIXI.Container();
+      app.stage.addChild(container);
+
+      const loader = PIXI.Loader.shared;
+      loader
+        .add("feet", "feet.png")
+        .add("eyes", "eyes.png")
+        .add("fog", "fog.png")
+        .load(setup);
+
+      let gameState = "waiting";
+      let symbolShown = false;
+      let running = false;
+      let fogSprite, fogAlpha = 0;
+      let time = 0;
+
+      function setup() {
+        breathingSound.play().catch(() => {});
+        waterSound.play().catch(() => {});
+
+        const feet = new PIXI.Sprite(loader.resources.feet.texture);
+        feet.anchor.set(0.5, 0);
+        feet.x = app.screen.width / 2;
+        feet.y = app.screen.height - 140;
+        feet.alpha = 0.8;
+        container.addChild(feet);
+
+        const eyes = new PIXI.Sprite(loader.resources.eyes.texture);
+        eyes.anchor.set(0.5);
+        eyes.x = app.screen.width / 2 + 150;
+        eyes.y = app.screen.height / 2 - 100;
+        eyes.alpha = 0;
+        container.addChild(eyes);
+
+        fogSprite = new PIXI.Sprite(loader.resources.fog.texture);
+        fogSprite.width = app.screen.width;
+        fogSprite.height = app.screen.height;
+        fogSprite.alpha = 0;
+        container.addChild(fogSprite);
+
+        app.stage.interactive = true;
+        app.stage.on("pointerdown", () => {
+          if (gameState === "waiting") {
+            gameState = "walking";
+            setTimeout(() => {
+              eyes.alpha = 1;
+              chainsSound.play().catch(() => {});
+              symbolShown = true;
+            }, 4000);
+            setTimeout(() => {
+              running = true;
+            }, 6000);
+            setTimeout(() => {
+              fogAlpha = 0.01;
+            }, 8500);
+            setTimeout(() => {
+              breathingSound.pause();
+              waterSound.pause();
+              showSlide5();
+            }, 10000);
+          }
+        });
+
+        app.ticker.add((delta) => {
+          time += delta;
+
+          if (running) {
+            container.x = -Math.sin(time * 0.1) * 4;
+          }
+
+          if (fogAlpha > 0 && fogSprite.alpha < 1) {
+            fogSprite.alpha += 0.01;
+          }
+        });
       }
     }
 
-    function showEyes() {
-      eyesVisible = true;
-      chainsSound.play().catch(e => console.log("Audio play failed:", e));
-      setTimeout(startRunning, 2000);
-    }
-
-    function startRunning() {
-      running = true;
-      setTimeout(showLadder, 3000);
-    }
-
-    function showLadder() {
-      ladderVisible = true;
-      setTimeout(showFog, 2000);
-    }
-
-    function showFog() {
-      fogAlpha = 0.01;
-      setTimeout(() => {
-        breathingSound.pause();
-        waterSound.pause();
-        showSlide5();
-      }, 2000);
-    }
-
-    function gameLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Фон канализации
-      ctx.fillStyle = "#333";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#555";
-      ctx.fillRect(backgroundX, canvas.height * 0.7, canvas.width * 2, canvas.height * 0.3); // Пол
-
-      // Ноги героя
-      ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
-      ctx.fillRect(canvas.width * 0.4, canvas.height * 0.7, 50, 100);
-      ctx.fillRect(canvas.width * 0.55, canvas.height * 0.7, 50, 100);
-
-      // Туман
-      ctx.fillStyle = "rgba(200, 200, 200, 0.3)";
-      ctx.fillRect(0, canvas.height * 0.7, canvas.width, canvas.height * 0.3);
-
-      // Красные глаза
-      if (eyesVisible) {
-        ctx.fillStyle = "red";
-        ctx.beginPath();
-        ctx.arc(canvas.width * 0.7, canvas.height * 0.4, 20, 0, Math.PI * 2);
-        ctx.arc(canvas.width * 0.8, canvas.height * 0.4, 20, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Лестница
-      if (ladderVisible) {
-        ctx.fillStyle = "#666";
-        ctx.fillRect(canvas.width * 0.8, canvas.height * 0.5, 50, canvas.height * 0.5);
-      }
-
-      // Туман при выходе
-      if (fogAlpha > 0) {
-        ctx.fillStyle = `rgba(255, 255, 255, ${fogAlpha})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        fogAlpha += 0.005;
-        if (fogAlpha > 1) fogAlpha = 1;
-      }
-
-      // Движение фона
-      if (gameState === "moving") {
-        backgroundX -= 1;
-      } else if (running) {
-        backgroundX -= 3;
-      }
-
-      requestAnimationFrame(gameLoop);
-    }
-
-    // Запуск
+    // Старт
     showSlide1();
   </script>
 </body>
