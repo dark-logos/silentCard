@@ -31,7 +31,7 @@ package main
 
    func saveWishHandler(w http.ResponseWriter, r *http.Request) {
    	// CORS
-   	w.Header().Set("Access-Control-Allow-Origin", "https://your-username.github.io")
+   	w.Header().Set("Access-Control-Allow-Origin", "https://dark-logos.github.io")
    	w.Header().Set("Access-Control-Allow-Methods", "POST")
    	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
