@@ -39,24 +39,9 @@
       height: 100%;
       object-fit: cover;
     }
-    #nextSlideButton {
-      position: absolute;
-      top: 100px;
-      left: 20px;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-      animation: pulse 1s infinite;
-      z-index: 10;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
     #wishForm {
       position: absolute;
-      top: 80%; /* Ещё ниже */
+      top: 80%; /* Внизу */
       left: 50%;
       transform: translate(-50%, -50%);
       color: #fff;
@@ -67,7 +52,7 @@
       border: 1px solid #fff; /* Белая граница */
       border-radius: 5px;
       z-index: 20;
-      display: none;
+      display: none; /* Скрыта до клика */
     }
     #wishInput {
       width: 300px;
@@ -90,7 +75,7 @@
       font-family: 'Courier New', monospace;
     }
     #submitWish:hover, #finishButton:hover {
-      background: #333; /* Лёгкое осветление при наведении */
+      background: #333; /* Осветление при наведении */
     }
     #wishMessage {
       margin-top: 10px;
@@ -127,6 +112,11 @@
     }
     .dialog-box button:hover {
       background: #7a5c4f;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
@@ -190,6 +180,7 @@
 
     let currentSlide = 1;
     let textCompleted = false;
+    let formShown = false;
 
     // Санитизация ввода (защита от XSS)
     function sanitizeInput(input) {
@@ -198,10 +189,10 @@
       return div.innerHTML.replace(/</g, "<").replace(/>/g, ">");
     }
 
-    // Получение CSRF-токена с сервера
+    // Получение CSRF-токена
     async function fetchCsrfToken() {
       try {
-        const response = await fetch('/csrf-token.php');
+        const response = await fetch('https://your-app.herokuapp.com/csrf-token.php');
         const data = await response.json();
         return data.csrfToken;
       } catch (error) {
@@ -230,11 +221,9 @@
       console.log("Showing slide 1");
       const slide1 = document.getElementById("slide1");
       typeText(slide1, slide1Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide2);
-        slide1.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide2();
+        }, { once: true });
       });
     }
 
@@ -246,11 +235,9 @@
       slide2.classList.add("active");
       textCompleted = false;
       typeText(slide2, slide2Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide3);
-        slide2.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide3();
+        }, { once: true });
       });
     }
 
@@ -262,11 +249,9 @@
       slide3.classList.add("active");
       textCompleted = false;
       typeText(slide3, slide3Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide4);
-        slide3.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide4();
+        }, { once: true });
       });
     }
 
@@ -293,11 +278,9 @@
       slide5.classList.add("active");
       textCompleted = false;
       typeText(slide5, slide5Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide6);
-        slide5.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide6();
+        }, { once: true });
       });
     }
 
@@ -309,11 +292,9 @@
       slide6.classList.add("active");
       textCompleted = false;
       typeText(slide6, slide6Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide7);
-        slide6.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide7();
+        }, { once: true });
       });
     }
 
@@ -340,11 +321,9 @@
       slide8.classList.add("active");
       textCompleted = false;
       typeText(slide8, slide8Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide9);
-        slide8.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide9();
+        }, { once: true });
       });
     }
 
@@ -356,11 +335,9 @@
       slide9.classList.add("active");
       textCompleted = false;
       typeText(slide9, slide9Text, 50, () => {
-        const nextButton = document.createElement("div");
-        nextButton.id = "nextSlideButton";
-        nextButton.textContent = "Далее ➤";
-        nextButton.addEventListener("click", showSlide10);
-        slide9.appendChild(nextButton);
+        document.addEventListener("click", () => {
+          if (textCompleted) showSlide10();
+        }, { once: true });
       });
     }
 
@@ -409,46 +386,52 @@
       csrfTokenInput.value = csrfToken || '';
 
       typeText(slide12Text, slide11Text, 50, () => {
-        const form = document.getElementById("wishForm");
-        const wishInput = document.getElementById("wishInput");
-        const wishMessage = document.getElementById("wishMessage");
-        const submitButton = document.getElementById("submitWish");
-        const finishButton = document.getElementById("finishButton");
-        form.style.display = "block";
+        // Показ формы по клику
+        document.addEventListener("click", () => {
+          if (!formShown) {
+            const form = document.getElementById("wishForm");
+            const wishInput = document.getElementById("wishInput");
+            const wishMessage = document.getElementById("wishMessage");
+            const submitButton = document.getElementById("submitWish");
+            const finishButton = document.getElementById("finishButton");
+            form.style.display = "block";
+            formShown = true;
 
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const wish = wishInput.value.trim();
-          if (wish) {
-            const sanitizedWish = sanitizeInput(wish);
-            try {
-              const response = await fetch('/save-wish.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-Token': csrfTokenInput.value
-                },
-                body: JSON.stringify({ wish: sanitizedWish })
-              });
-              const data = await response.json();
-              if (data.success) {
-                wishMessage.textContent = `Твоё желание: ${sanitizedWish}`;
-                submitButton.style.display = "none";
-                finishButton.style.display = "inline-block";
+            form.addEventListener("submit", async (e) => {
+              e.preventDefault();
+              const wish = wishInput.value.trim();
+              if (wish) {
+                const sanitizedWish = sanitizeInput(wish);
+                try {
+                  const response = await fetch('https://your-app.herokuapp.com/save-wish.php', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRF-Token': csrfTokenInput.value
+                    },
+                    body: JSON.stringify({ wish: sanitizedWish })
+                  });
+                  const data = await response.json();
+                  if (data.success) {
+                    wishMessage.textContent = `Твоё желание: ${sanitizedWish}`;
+                    submitButton.style.display = "none";
+                    finishButton.style.display = "inline-block";
+                  } else {
+                    wishMessage.textContent = `Ошибка: ${data.error}`;
+                  }
+                } catch (error) {
+                  console.error("Error saving wish:", error);
+                  wishMessage.textContent = "Ошибка при сохранении желания";
+                }
               } else {
-                wishMessage.textContent = `Ошибка: ${data.error}`;
+                wishMessage.textContent = "Напиши своё желание!";
               }
-            } catch (error) {
-              console.error("Error saving wish:", error);
-              wishMessage.textContent = "Ошибка при сохранении желания";
-            }
-          } else {
-            wishMessage.textContent = "Напиши своё желание!";
-          }
-        }, { once: true });
+            }, { once: true });
 
-        finishButton.addEventListener("click", () => {
-          showSecretSlide();
+            finishButton.addEventListener("click", () => {
+              showSecretSlide();
+            }, { once: true });
+          }
         }, { once: true });
       });
     }
