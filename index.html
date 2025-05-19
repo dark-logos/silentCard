@@ -89,9 +89,6 @@
     <video id="video1" autoplay>
       <source src="before_altar.mp4" type="video/mp4">
     </video>
-    <audio id="audio1" autoplay>
-      <source src="before_altar.mp3" type="audio/mp3">
-    </audio>
   </div>
   <div id="slide5" class="slide"></div>
   <div id="slide6" class="slide"></div>
@@ -99,9 +96,6 @@
     <video id="video2" autoplay>
       <source src="burning_altar.mp4" type="video/mp4">
     </video>
-    <audio id="audio2" autoplay>
-      <source src="burning_altar.mp3" type="audio/mp3">
-    </audio>
   </div>
   <div id="slide8" class="slide"></div>
   <div id="slide9" class="slide"></div>
@@ -109,17 +103,11 @@
     <video id="video3" autoplay>
       <source src="climbing_stairs.mp4" type="video/mp4">
     </video>
-    <audio id="audio3" autoplay>
-      <source src="climbing_stairs.mp3" type="audio/mp3">
-    </audio>
   </div>
   <div id="slide11" class="slide">
     <video id="video4" autoplay>
       <source src="death_by_dog.mp4" type="video/mp4">
     </video>
-    <audio id="audio4" autoplay>
-      <source src="death_by_dog.mp3" type="audio/mp3">
-    </audio>
   </div>
   <div id="slide12" class="slide">
     <form id="wishForm">
@@ -210,10 +198,10 @@
       slide3.classList.remove("active");
       slide4.classList.add("active");
       const video = document.getElementById("video1");
-      video.play();
+      video.play().catch(e => console.error("Video playback failed:", e));
       video.addEventListener("ended", () => {
         showSlide5();
-      });
+      }, { once: true });
     }
 
     function showSlide5() {
@@ -255,10 +243,10 @@
       slide6.classList.remove("active");
       slide7.classList.add("active");
       const video = document.getElementById("video2");
-      video.play();
+      video.play().catch(e => console.error("Video playback failed:", e));
       video.addEventListener("ended", () => {
         showSlide8();
-      });
+      }, { once: true });
     }
 
     function showSlide8() {
@@ -300,10 +288,10 @@
       slide9.classList.remove("active");
       slide10.classList.add("active");
       const video = document.getElementById("video3");
-      video.play();
+      video.play().catch(e => console.error("Video playback failed:", e));
       video.addEventListener("ended", () => {
         showSlide11();
-      });
+      }, { once: true });
     }
 
     function showSlide11() {
@@ -313,10 +301,10 @@
       slide10.classList.remove("active");
       slide11.classList.add("active");
       const video = document.getElementById("video4");
-      video.play();
+      video.play().catch(e => console.error("Video playback failed:", e));
       video.addEventListener("ended", () => {
         showSlide12();
-      });
+      }, { once: true });
     }
 
     function showSlide12() {
@@ -325,11 +313,15 @@
       const slide12 = document.getElementById("slide12");
       slide11.classList.remove("active");
       slide12.classList.add("active");
-      const form = document.getElementById("wishForm");
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const wish = document.getElementById("wishInput").value;
-        alert(`Твоё желание: ${wish}`);
+      textCompleted = false;
+      typeText(slide12, slide11Text, 50, () => {
+        const form = document.getElementById("wishForm");
+        form.style.display = "block";
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const wish = document.getElementById("wishInput").value;
+          alert(`Твоё желание: ${wish}`);
+        });
       });
     }
 
